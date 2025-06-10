@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Dashboard</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-red: #dc3545;
+        --dark-red: #c82333;
+        --light-red: #f8d7da;
+        --white: #ffffff;
+        --light-gray: #f8f9fa;
+        --dark-gray: #6c757d;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(
+          135deg,
+          var(--light-red) 0%,
+          var(--white) 100%
+        );
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .container-fluid {
+        padding: 0;
+        max-width: 480px;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        background: var(--white);
+        min-height: 100vh;
+      }
+
+      /* Header */
+      .header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-red) 0%,
+          var(--dark-red) 100%
+        );
+        color: var(--white);
+        padding: 20px 15px;
+        border-radius: 0 0 25px 25px;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .header::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        animation: float 6s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-10px) rotate(180deg);
+        }
+      }
+
+      .profile-section {
+        position: relative;
+        z-index: 2;
+      }
+
+      .profile-avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--primary-red);
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .welcome-text {
+        font-size: 14px;
+        opacity: 0.9;
+        margin-bottom: 5px;
+      }
+
+      .user-name {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 0;
+      }
+
+      /* Main Content */
+      .main-content {
+        padding: 25px 15px;
+      }
+
+      .section-title {
+        color: var(--primary-red);
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .section-title i {
+        font-size: 20px;
+      }
+
+      /* Scanner Card */
+      .scanner-card {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.1);
+        margin-bottom: 25px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .scanner-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-red), var(--dark-red));
+      }
+
+      .camera-section {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+
+      .camera-frame {
+        width: 200px;
+        height: 150px;
+        border: 3px dashed var(--primary-red);
+        border-radius: 15px;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--light-gray);
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .camera-frame:hover {
+        border-color: var(--dark-red);
+        background: rgba(248, 215, 218, 0.3);
+      }
+
+      .camera-frame i {
+        font-size: 40px;
+        color: var(--primary-red);
+      }
+
+      .scan-btn {
+        background: linear-gradient(
+          135deg,
+          var(--primary-red),
+          var(--dark-red)
+        );
+        color: var(--white);
+        border: none;
+        border-radius: 50px;
+        padding: 12px 30px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+      }
+
+      .scan-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.4);
+        color: var(--white);
+      }
+
+      .scan-btn:active {
+        transform: translateY(0px);
+      }
+
+      /* Manual Input */
+      .manual-input {
+        border-top: 1px solid rgba(220, 53, 69, 0.2);
+        padding-top: 20px;
+      }
+
+      .input-group {
+        margin-bottom: 15px;
+      }
+
+      .form-control {
+        border: 2px solid rgba(220, 53, 69, 0.2);
+        border-radius: 12px;
+        padding: 12px 15px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        border-color: var(--primary-red);
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+      }
+
+      .input-group-text {
+        background: var(--primary-red);
+        color: var(--white);
+        border: 2px solid var(--primary-red);
+        border-radius: 12px 0 0 12px;
+      }
+
+      .submit-btn {
+        background: var(--white);
+        color: var(--primary-red);
+        border: 2px solid var(--primary-red);
+        border-radius: 12px;
+        padding: 10px 25px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+      }
+
+      .submit-btn:hover {
+        background: var(--primary-red);
+        color: var(--white);
+      }
+
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 25px;
+      }
+
+      .stat-card {
+        background: var(--white);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(220, 53, 69, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      }
+
+      .stat-number {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--primary-red);
+        margin-bottom: 5px;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: var(--dark-gray);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Recent Activity */
+      .activity-item {
+        background: var(--white);
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-left: 4px solid var(--primary-red);
+        transition: all 0.3s ease;
+      }
+
+      .activity-item:hover {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .activity-time {
+        font-size: 12px;
+        color: var(--dark-gray);
+      }
+
+      .activity-action {
+        font-weight: 600;
+        color: var(--primary-red);
+        margin-bottom: 3px;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .container-fluid {
+          max-width: 100%;
+        }
+
+        .camera-frame {
+          width: 180px;
+          height: 130px;
+        }
+      }
+
+      /* Animations */
+      .fade-in {
+        animation: fadeIn 0.6s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .scanning {
+        animation: pulse 1.5s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <!-- Header with Profile -->
+      <div class="header">
+        <div class="profile-section d-flex align-items-center">
+          <div class="profile-avatar me-3">
+            <i class="fas fa-user"></i>
+          </div>
+          <div>
+            <div class="welcome-text">Welcome back,</div>
+            <div class="user-name">John Doe</div>
+          </div>
+          <div class="ms-auto">
+            <i class="fas fa-bell fs-5" style="opacity: 0.8"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content fade-in">
+        <!-- Barcode Scanner Section -->
+        <div class="section-title">
+          <i class="fas fa-qrcode"></i>
+          Barcode Scanner
+        </div>
+
+        <div class="scanner-card">
+          <!-- Camera Scanner -->
+          <div class="camera-section">
+            <div class="camera-frame" id="cameraFrame">
+              <i class="fas fa-camera"></i>
+            </div>
+            <button class="btn scan-btn" onclick="startScanning()">
+              <i class="fas fa-camera me-2"></i>
+              Start Camera Scan
+            </button>
+          </div>
+
+          <!-- Manual Input -->
+          <div class="manual-input">
+            <h6 class="text-muted mb-3">
+              <i class="fas fa-keyboard me-2"></i>
+              Or enter barcode manually
+            </h6>
+            <div class="input-group mb-3">
+              <span class="input-group-text">
+                <i class="fas fa-barcode"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                id="barcodeInput"
+                placeholder="Enter barcode number"
+              />
+            </div>
+            <button class="btn submit-btn" onclick="processBarcode()">
+              <i class="fas fa-search me-2"></i>
+              Process Barcode
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="section-title">
+          <i class="fas fa-chart-bar"></i>
+          Today's Activity
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number">47</div>
+            <div class="stat-label">Scanned Items</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">12</div>
+            <div class="stat-label">New Entries</div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="section-title mt-4">
+          <i class="fas fa-history"></i>
+          Recent Activity
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-action">Product Scanned</div>
+          <div class="text-muted small">Barcode: 1234567890123</div>
+          <div class="activity-time">2 minutes ago</div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-action">Inventory Updated</div>
+          <div class="text-muted small">Item: Premium Coffee Beans</div>
+          <div class="activity-time">15 minutes ago</div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-action">Manual Entry</div>
+          <div class="text-muted small">Barcode: 9876543210987</div>
+          <div class="activity-time">32 minutes ago</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      let isScanning = false;
+
+      function startScanning() {
+        const cameraFrame = document.getElementById("cameraFrame");
+        const scanBtn = document.querySelector(".scan-btn");
+
+        if (!isScanning) {
+          // Start scanning
+          isScanning = true;
+          cameraFrame.classList.add("scanning");
+          cameraFrame.innerHTML =
+            '<i class="fas fa-camera"></i><div class="mt-2 small">Scanning...</div>';
+          scanBtn.innerHTML = '<i class="fas fa-stop me-2"></i>Stop Scanning';
+          scanBtn.style.background =
+            "linear-gradient(135deg, #6c757d, #495057)";
+
+          // Simulate scanning process
+          setTimeout(() => {
+            // Simulate successful scan
+            cameraFrame.innerHTML =
+              '<i class="fas fa-check-circle text-success"></i><div class="mt-2 small text-success">Scan Complete!</div>';
+
+            // Add scanned barcode to input
+            document.getElementById("barcodeInput").value = "1234567890123";
+
+            // Reset after 2 seconds
+            setTimeout(() => {
+              resetScanning();
+            }, 2000);
+          }, 3000);
+        } else {
+          // Stop scanning
+          resetScanning();
+        }
+      }
+
+      function resetScanning() {
+        const cameraFrame = document.getElementById("cameraFrame");
+        const scanBtn = document.querySelector(".scan-btn");
+
+        isScanning = false;
+        cameraFrame.classList.remove("scanning");
+        cameraFrame.innerHTML = '<i class="fas fa-camera"></i>';
+        scanBtn.innerHTML =
+          '<i class="fas fa-camera me-2"></i>Start Camera Scan';
+        scanBtn.style.background =
+          "linear-gradient(135deg, var(--primary-red), var(--dark-red))";
+      }
+
+      function processBarcode() {
+        const barcodeInput = document.getElementById("barcodeInput");
+        const barcode = barcodeInput.value.trim();
+
+        if (barcode) {
+          // Simulate processing
+          const submitBtn = document.querySelector(".submit-btn");
+          const originalText = submitBtn.innerHTML;
+
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+          submitBtn.disabled = true;
+
+          setTimeout(() => {
+            alert(`Barcode processed successfully: ${barcode}`);
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+            barcodeInput.value = "";
+
+            // Update stats
+            updateStats();
+          }, 1500);
+        } else {
+          alert("Please enter a barcode number");
+          barcodeInput.focus();
+        }
+      }
+
+      function updateStats() {
+        const scannedCount = document.querySelector(".stat-number");
+        const currentCount = parseInt(scannedCount.textContent);
+        scannedCount.textContent = currentCount + 1;
+
+        // Add animation effect
+        scannedCount.style.transform = "scale(1.2)";
+        scannedCount.style.color = "#28a745";
+
+        setTimeout(() => {
+          scannedCount.style.transform = "scale(1)";
+          scannedCount.style.color = "var(--primary-red)";
+        }, 300);
+      }
+
+      // Add enter key support for barcode input
+      document
+        .getElementById("barcodeInput")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            processBarcode();
+          }
+        });
+
+      // Add some interactive feedback
+      document.querySelectorAll(".stat-card").forEach((card) => {
+        card.addEventListener("click", function () {
+          this.style.transform = "scale(0.95)";
+          setTimeout(() => {
+            this.style.transform = "translateY(-5px)";
+          }, 150);
+        });
+      });
+    </script>
+  </body>
+</html>

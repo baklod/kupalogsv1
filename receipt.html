@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            width: 58mm;
+            margin: 0 auto;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .line {
+            border-top: 1px dashed #000;
+            margin: 5px 0;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footer {
+            margin-top: 10px;
+        }
+
+        @media print {
+            body {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="center bold">My Store</div>
+    <div class="center">123 Sample St., City</div>
+    <div class="center">Tel: 0912-345-6789</div>
+    <div class="line"></div>
+    
+    <div class="item"><span>Item A</span><span>₱50.00</span></div>
+    <div class="item"><span>Item B</span><span>₱30.00</span></div>
+    <div class="item"><span>Item C</span><span>₱20.00</span></div>
+
+    <div class="line"></div>
+    <div class="item bold"><span>Total</span><span>₱100.00</span></div>
+    <div class="item"><span>Cash</span><span>₱150.00</span></div>
+    <div class="item"><span>Change</span><span>₱50.00</span></div>
+
+    <div class="line"></div>
+    <div class="center footer">
+        Thank you!<br>
+        Please come again.<br>
+        {{ now()->format('Y-m-d H:i:s') }}
+    </div>
+
+    <script>
+        // Uncomment below if you want auto-print
+        // window.onload = function() {
+        //     window.print();
+        // };
+    </script>
+</body>
+</html>
